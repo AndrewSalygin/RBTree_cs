@@ -254,7 +254,6 @@ namespace RBTree {
         }
 
         public void Delete(int key) {
-            //first find the node in the tree to delete and assign to item pointer/reference
             Node z = Find(key);
             Node x;
             Node y = z;
