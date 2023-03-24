@@ -5,10 +5,20 @@ class Program
     static void Main(string[] args)
     {
         RB tree = new RB();
-        tree.Insert(13);
-        tree.Insert(8);
-        tree.Insert(17);
-        tree.Delete(13);
+        tree.Insert(457);
+        tree.Insert(176);
+        tree.Insert(706);
+        tree.Insert(16);
+        tree.Insert(372);
+        tree.Insert(642);
+        tree.Insert(768);
+        tree.Insert(216);
+        tree.Insert(455);
+        tree.Insert(675);
+        tree.Insert(680);
+        tree.Insert(681);
+        tree.Delete(706);
+        tree.Delete(681);
         Console.ReadLine();
     }
 }
@@ -310,7 +320,8 @@ class RB
             root.color = Color.Black;
         }
     }
-
+    
+    // перепривязывает родителю старого сына (u вершины) на нового (v вершины)
     private void rbTransplant(ref Node u, ref Node v)
     {
         if (u.parent == null)
@@ -336,6 +347,7 @@ class RB
         Node y = z;
         Color yOriginalColor = y.color;
 
+        // удаляем старый элемент (делаем перепривязку)
         if (z.left.data == int.MinValue)
         {
             x = z.right;
@@ -347,24 +359,28 @@ class RB
             rbTransplant(ref z, ref z.left);
         }
         else {
+            // ищем минимальный элемент в правом поддереве
             y = minimum(z.right);
             yOriginalColor = y.color;
+            // сохраняем правое поддерево минимального элемента
             x = y.right;
-            if (y.parent == z)
+            // Случай не линии (три в ряд)
+            if (y.parent != z)
             {
-                x.parent = y;
-            }
-            else
-            {
+                // делаем перепривязку (меняем удаляемую вершину z на минимальную вершину y)
                 rbTransplant(ref y, ref y.right);
                 y.right = z.right;
                 y.right.parent = y;
             }
+                // делаем привязку отца удаляемой вершины к новой вершине y
                 rbTransplant(ref z, ref y);
+                // делаем привязку к левой вершине старой ноды к новой вершине y
                 y.left = z.left;
                 y.left.parent = y;
+                // из-за этого нуженy yOriginalColor    
                 y.color = z.color;
            }
+        // запускаем проверку на баланс от сына удаляемой ноды, если нода была черная
             if (yOriginalColor == 0)
             {
                 DeleteFixUp(x);
